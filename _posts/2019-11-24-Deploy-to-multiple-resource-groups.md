@@ -14,14 +14,39 @@ Deploy to multiple resource groups within the same ARM template.
 
 
 ## Solution
-Use the ARM templates [_NestedTemplates_](http://link-to-the-docs) feature to steer the deploymetn to another resource group. 
+Use the [_NestedTemplates_](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-linked-templates#nested-template) feature and the `resourceGroup` property to steer the deploymetn to another resource group. 
 
 ### Example
-
-<!---```json
-
+```json
+"resources": [
+  {
+    "type": "Microsoft.Resources/deployments",
+    "apiVersion": "2019-05-01",
+    "name": "nestedTemplate",
+    "resourceGroup": "[parameters('storageResourceGroup')",
+    "properties": {
+      "mode": "Incremental",
+      "template": {
+        "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+        "contentVersion": "1.0.0.0",
+        "resources": [
+          {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('storageName')]",
+            "location": "West US",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+          }
+        ]
+      }
+    }
+  }
+]
 
 ```
-
+<!---
 [Full example ARM template](/link-to-raw-arm)
 -->
