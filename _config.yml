@@ -1,6 +1,6 @@
-theme: jekyll-theme-cayman
-title: King Of ARM
+theme: minima
+title: King of ARM
 email: mattias@sjolinder.se
-description: How-To archive for working with ARM templates
+description: King of ARM is a how-to archive for working with ARM templates
 url: http://www.kingofarm.com
 google_analytics: UA-150949537-1
