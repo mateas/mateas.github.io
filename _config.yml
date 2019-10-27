@@ -4,3 +4,6 @@ email: mattias@sjolinder.se
 description: King of ARM is a how-to archive for working with ARM templates
 url: http://www.kingofarm.com
 google_analytics: UA-150949537-1
+
+plugins:
+  - jekyll-feed
