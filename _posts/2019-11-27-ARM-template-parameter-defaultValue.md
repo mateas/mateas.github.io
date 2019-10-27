@@ -2,7 +2,7 @@
 layout: post
 title:  "ARM template defaults"
 date:   2019-11-27
-categories: ARM
+tags: [ARM, ARM-template]
 ---
 Working with the `deafultValue` on ARM parameters is good when you want the template to become a bit more flexible and easy to use. A pattern tha I have found usefull is to use a combination of parameter defaults and _variables_ to write the most flexible and powerfull ARM templates.
 
