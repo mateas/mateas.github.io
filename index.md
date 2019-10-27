@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: home
 title: ~/
 ---
 # Welcome to King of ARM
