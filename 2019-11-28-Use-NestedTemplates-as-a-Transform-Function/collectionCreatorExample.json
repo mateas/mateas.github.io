@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "collection": {
+            "type": "array"
+        }
+    },
+    "variables": {
+        "result": {
+            "copy": [
+                {
+                    "name": "createdValue",
+                    "count": "[length(parameters('collection'))]",
+                    "input": {
+                        "name": "[concat('name', copyIndex('createdValue'))]",
+                        "valueFromCollection": "[parameters('collection')[copyIndex('createdValue')].param]"
+                    }
+                }
+            ]
+        }
+    },
+    "resources": [
+    ],
+    "outputs": {
+        "Result": {
+            "value": "[variables('result').createdValue]",
+            "type": "array"
+        }
+    }
+}
