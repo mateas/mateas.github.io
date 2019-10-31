@@ -12,83 +12,88 @@ The only issue with linked templates is that the template tha is being linked mu
 ## Make your templates available in private storage account
 A simple solution to this is to copy you linked templates into a Azure storage account container with no public access. When you are to deploy your master template, create a SAS token for the container and supply that to your master template as a ARM parameter. 
 
-# Copy script for your linked templates
-
-
-### Step 1
-Use the `defaultValue` of the `ResourceID` parameter to _create_ the full ResourceId based on the other parameters `SubsriptonId`, `ResourecGroup` and `WorkspaceName`. 
-
-```json
-  "parameters": {
-    "SubscriptionId": {
-      "type": "string",
-      "defaultValue": "[split(resourceGroup().id,'/')[2]]"
-    },
-    "ResourceGroup": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().name]"
-    },
-    "WorkspaceName": {
-      "type": "string",
-      "defaultValue": ""
-    },
-    "ResourceID": {
-      "type": "string",
-      "defaultValue": "[resourceId(parameters('SubscriptionId'), parameters('ResourceGroup'), 'Microsoft.OperationalInsights/workspaces', parameters('WorkspaceName'))]"
-    },
-  }
+# Copy-script for your linked templates
+## Step 1 - Create a storage account for your nested templates
+You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at http://kingofarm.com/20191031/NestedTemplates/storage.json
+```PowerShell
+New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
+$storageAccountDeployment = New-AzResourceGroupDeployment `
+    -TemplateUri "http://kingofarm.com/20191031/NestedTemplates/storage.json" `
+    -Name storage-deployment `
+    -ResourceGroupName $resourceGroupName `
+    -Location $location `
+    -TemplateParameterObject @{ `
+        storageAccountName = $storageAccountName; `
+        containerName      = $containerName
+}
 ```
 
-### Step 2
-To be able to use values of `SubsriptonId`, `ResourecGroup` and `WorkspaceName`, don´t use the parameters . Instead, create variables that calculates their values based on the `ResourceId` parameter.
+## Step 2 - Copy all nested template files
+Arrange all your nested templates into a single folder and copy each file to the blob storage container recursively. Use `New-AzStorageContext` to create a context connected to the storage accoutn required for the copy function `Set-AzStorageBlobContent`.
+```PowerShell
+...
 
-```json
-  "variables": {
-      "SubscriptionId": "[split(parameters('ResourceID'),'/')[2]]",
-      "ResourceGroup": "[split(parameters('ResourceID'),'/')[4]]",
-      "WorkspaceName": "[split(parameters('ResourceID'),'/')[8]]"
-  },
+$ctx = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageKeys.keys[0].value
+
+...
+
+Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
+    Set-AzStorageBlobContent `
+        -File $_.FullName `
+        -Blob $_.FullName.Substring($linkedfilesLocalPath.Length + 1) `
+        -Container $containerName `
+        -Context $ctx `
+        -Force | Out-Null
+}
 ```
 
-### Step 3
-Now you can refer to any value of `SubsriptonId`, `ResourecGroup`, `WorkspaceName` or `ResourceÍD`in your template not worrying if the value has been set or not.
+[Here you can download the full script](./20191031/copy-to-storage.json)
 
 
-```json
+# Use the linked templates in your storage account
+
+Introduce 2 parameters in the _parent_ template; `TemplateURL` and `TemplateToken`  which  will hold the values to access the linked template. 
+
+Before doing the deployment of the parent template, fetch the storage account using PowerShell and the value of `TemplateURL` and `TemplateToken` and use those in the ARM template deployment.
+
+## Parameters in the _parent_ template
+```Json 
+"parameters": {
+    "TemplateURL": {
+        "type": "string"
+    },
+    "TemplateToken": {
+        "type": "string"
+    }
+}
+```
+Use these in all the linked templates resousrces. Here you can see one example
+```Json 
 "resources": [
-        {
-            "type": "Microsoft.Resources/deployments",
-            "name": "nestedResourceDeploymentName",
-            "apiVersion": "2017-05-10",
-            "subscriptionId": "[variables('SubscriptionId')]",
-            "resourceGroup": "[variables('ResourceGroup')]",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                        {
-                            "apiVersion": "2015-11-01-preview",
-                            "type": "Microsoft.OperationsManagement/solutions",
-                            ...
-                            "properties": {
-                                "workspaceResourceId": "[parameters('ResourceID')]"
-                            }
-                        }
-                    ]
-                }
-            }
-        }
-    ]
+ {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "name": "linkedTemplate",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[concat(parameters('TemplateURL'), '/NestedTemplates/storage.json', parameters('TemplateToken'))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "StorageAccountName": {
+                  "value": "[parameters('StorageAccountName')]"
+              }
+          }
+      }
+  }
+]
+```
+[Here you can download the full ARM template](./20191031/parent-arm.json)
+
+## Script for fetching the 
+```PowerShell
 ```
 
-### ARM template usage
 
-When using this pattern, any of these alternatives may be used as input:
-* only use `ResourceID` parameter (this is the primary option and will override any usage of the other parameters)
-* only use `WorkspaceName` parameter (when instance is located in the same subscription and resource group)
-* use both `WorkspaceName` and `ResourecGroup` parameters (when instance is located in the same subscription but a different resource group)
-* use all three parameters `SubsriptonId`, `ResourecGroup` and `WorkspaceName`
+[Here you can download the full script](./20191031/deploy-parent-arm.json)

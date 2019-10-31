@@ -1,11 +1,12 @@
-#Change the storageAccountName to something gloabally unique
-$storageAccountName = "kingofarmdeployment"
-
-$resourceGroupName = "arm-deployment"
-$containerName = "linkedfiles"
-$location = "westeurope"
-
-$linkedfilesLocalPath = "./NestedTemplates"
+param (
+    [Parameter(Mandatory = $true)]
+    $storageAccountName , #= "kingofarmdeployment",
+    $resourceGroupName = "arm-deployment",
+    $containerName = "linkedfiles",
+    $location = "westeurope",
+    $linkedfilesLocalPath = "./NestedTemplates"
+)
+$ErrorActionPreference = "Stop"
 
 Write-Host "Deploying a storage account using ARM template from kingofarm.com..."
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
@@ -13,7 +14,6 @@ $storageAccountDeployment = New-AzResourceGroupDeployment `
     -TemplateUri "http://kingofarm.com/20191031/NestedTemplates/storage.json" `
     -Name storage-deployment `
     -ResourceGroupName $resourceGroupName `
-    -Location $location `
     -TemplateParameterObject @{ `
         storageAccountName = $storageAccountName; `
         containerName      = $containerName
