@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory = $true)]
-    $storageAccountName , #= "kingofarmdeployment",
+    $storageAccountName,
     $resourceGroupName = "arm-deployment",
     $containerName = "linkedfiles",
     $location = "westeurope",
@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 Write-Host "Deploying a storage account using ARM template from kingofarm.com..."
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
-    -TemplateUri "http://kingofarm.com/20191031/NestedTemplates/storage.json" `
+    -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
     -Name storage-deployment `
     -ResourceGroupName $resourceGroupName `
     -TemplateParameterObject @{ `

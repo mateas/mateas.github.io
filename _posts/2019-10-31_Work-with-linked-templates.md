@@ -14,11 +14,11 @@ A simple solution to this is to copy you linked templates into a Azure storage a
 
 # Copy-script for your linked templates
 ## Step 1 - Create a storage account for your nested templates
-You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at http://kingofarm.com/20191031/NestedTemplates/storage.json
+You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at http://kingofarm.com/2019-10-31/NestedTemplates/storage.json
 ```PowerShell
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
-    -TemplateUri "http://kingofarm.com/20191031/NestedTemplates/storage.json" `
+    -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
     -Name storage-deployment `
     -ResourceGroupName $resourceGroupName `
     -Location $location `
@@ -47,7 +47,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 }
 ```
 
-[Here you can download the full script](./20191031/copy-to-storage.json)
+[Here you can download the full script](./2019-10-31/copy-to-storage.json)
 
 
 # Use the linked templates in your storage account
@@ -89,11 +89,11 @@ Use these in all the linked templates resousrces. Here you can see one example
   }
 ]
 ```
-[Here you can download the full ARM template](./20191031/parent-arm.json)
+[Here you can download the full ARM template](./2019-10-31/parent-arm.json)
 
 ## Script for fetching the 
 ```PowerShell
 ```
 
 
-[Here you can download the full script](./20191031/deploy-parent-arm.json)
+[Here you can download the full script](./2019-10-31/deploy-parent-arm.json)
