@@ -8,7 +8,7 @@ Working with the `deafultValue` on ARM parameters is good when you want the temp
 
 An example is when you want to refer to another resource in your template, such as a Log Anayltics instance, and you want to support both the full ResourceID as a single parameter or a combination of three paramters which in combination tagets the correct instance. 
 
-The steps in this example will target the  `Microsoft.OperationalInsights/workspaces` resource but the same pattern works for any other Azure resource.
+The steps in this example will target the `Microsoft.OperationalInsights/workspaces` resource but the same pattern works for any other Azure resource.
 
 ### Step 1
 Use the `defaultValue` of the `ResourceID` parameter to _create_ the full ResourceId based on the other parameters `SubsriptonId`, `ResourecGroup` and `WorkspaceName`. 

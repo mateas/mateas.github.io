@@ -4,7 +4,7 @@ title:  "Work with linked templates"
 date:   2019-10-31
 tags: [ARM, ARM-template]
 ---
-Linked templates is the ARM template feature that allows you to separate different resource deployments into simple and easy to use templates. A common pattern is to separate all individual resources into separate templates and then having one or multiple "parent" templates referenceing those individual ones. This is what Microsoft calls [_linked templates_](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-linked-templates#external-template).
+Linked templates is the ARM template feature that allows you to separate different resource deployments into simple and easy to use templates. A common pattern is to separate all individual resources into separate templates and then having one or multiple "parent" templates referenceing those individual ones. This is what Microsoft calls <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-linked-templates#external-template" target="_blank">_linked templates_</a>.
 
 
 The only issue with linked templates is that the template tha is being linked must be availbale on the Internet and cannot be supplied at deploytime together with the _parent_ template. 
@@ -47,7 +47,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 }
 ```
 
-[Here you can download the full script](./2019-10-31/copy-to-storage.json)
+[Here you can download the full script](~/2019-10-31/copy-to-storage.json)
 
 
 # Use the linked templates in your storage account
