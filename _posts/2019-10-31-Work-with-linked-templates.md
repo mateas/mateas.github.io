@@ -17,7 +17,7 @@ A simple solution to this is to copy you linked templates into a Azure storage a
 ### Step 1 - Create a storage account for your nested templates
 You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at <a href="{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json">{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json</a>
 
-```PowerShell
+```powershell
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
     -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
@@ -32,7 +32,8 @@ $storageAccountDeployment = New-AzResourceGroupDeployment `
 
 ### Step 2 - Copy all nested template files
 Arrange all your nested templates into a single folder and copy each file to the blob storage container recursively. Use `New-AzStorageContext` to create a context connected to the storage accoutn required for the copy function `Set-AzStorageBlobContent`.
-```PowerShell
+
+```powershell
 ...
 
 $ctx = New-AzStorageContext `
@@ -61,7 +62,8 @@ Introduce 2 parameters in the _parent_ template; `TemplateURL` and `TemplateToke
 Before doing the deployment of the parent template, fetch the storage account using PowerShell and the value of `TemplateURL` and `TemplateToken` and use those in the ARM template deployment.
 
 ### Parameters in the _parent_ template
-```JSON 
+
+```json
 "parameters": {
     "TemplateURL": {
         "type": "string"
@@ -72,7 +74,8 @@ Before doing the deployment of the parent template, fetch the storage account us
 }
 ```
 Use these in all the linked templates resousrces. Here you can see one example
-```JSON 
+
+```json
 "resources": [
  {
       "type": "Microsoft.Resources/deployments",
@@ -99,7 +102,8 @@ Use these in all the linked templates resousrces. Here you can see one example
 ### Script for fetching the SAS token
 Creating a new SAS token for the storage accoutn and container is an easy operation using `New-AzStorageContainerSASToken`. SAS tokens are not stored in Azure in any way, they are generated on request signed by keys for the storage account. Read more about 
 <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas" target="_blank">SAS tokens on Microsoft Azure</a>.
-```PowerShell
+
+```powershell
 $sasToken = New-AzStorageContainerSASToken `
     -Container $ContainerName `
     -StartTime $StartTime `
