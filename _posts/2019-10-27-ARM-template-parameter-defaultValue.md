@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "ARM template defaults"
-date:   2019-11-27
+date:   2019-10-27
 tags: [ARM, ARM-template]
 ---
 Working with the `deafultValue` on ARM parameters is good when you want the template to become a bit more flexible and easy to use. A pattern tha I have found usefull is to use a combination of parameter defaults and _variables_ to write the most flexible and powerfull ARM templates.
 
 An example is when you want to refer to another resource in your template, such as a Log Anayltics instance, and you want to support both the full ResourceID as a single parameter or a combination of three paramters which in combination tagets the correct instance. 
 
-The steps in this example will target the  `Microsoft.OperationalInsights/workspaces` resource but the same pattern works for any other Azure resource.
+The steps in this example will target the `Microsoft.OperationalInsights/workspaces` resource but the same pattern works for any other Azure resource.
 
 ### Step 1
 Use the `defaultValue` of the `ResourceID` parameter to _create_ the full ResourceId based on the other parameters `SubsriptonId`, `ResourecGroup` and `WorkspaceName`. 
