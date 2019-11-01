@@ -18,7 +18,7 @@ You can use a ARM template from kingofarm.com as in following example but there 
 ```PowerShell
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
-    -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
+    -TemplateUri "{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json" `
     -Name storage-deployment `
     -ResourceGroupName $resourceGroupName `
     -Location $location `
@@ -47,7 +47,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 }
 ```
 
-[Here you can download the full script](http://kingofarm.com/2019-10-31/copy-to-storage.ps1)
+[Here you can download the full script]({{site.baseurl}}/2019-10-31/copy-to-storage.ps1)
 
 
 # Use the linked templates in your storage account
