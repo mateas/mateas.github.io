@@ -1,38 +1,38 @@
 param (
     [Parameter(Mandatory = $true)]
-    $storageAccountName,
-    $resourceGroupName = "arm-deployment",
-    $containerName = "linkedfiles",
-    $location = "westeurope",
-    $linkedfilesLocalPath = "./NestedTemplates"
+    $StorageAccountName,
+    $ResourceGroupName = "arm-deployment",
+    $ContainerName = "linkedfiles",
+    $Location = "westeurope",
+    $LinkedfilesLocalPath = "./NestedTemplates"
 )
 $ErrorActionPreference = "Stop"
 
 Write-Host "Deploying a storage account using ARM template from kingofarm.com..."
-New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
+New-AzResourceGroup -Name $ResourceGroupName -Location $Location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
     -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
     -Name storage-deployment `
-    -ResourceGroupName $resourceGroupName `
+    -ResourceGroupName $ResourceGroupName `
     -TemplateParameterObject @{ `
-        storageAccountName = $storageAccountName; `
-        containerName      = $containerName
+        storageAccountName = $StorageAccountName; `
+        containerName      = $ContainerName
 }
-Write-Host "Successfully deployed storage account '$storageAccountName' in resource group '$resourceGroupName'!"
+Write-Host "Successfully deployed storage account '$StorageAccountName' in resource group '$ResourceGroupName'!"
 
 $storageKeys = $storageAccountDeployment.Outputs.storageKeys.Value.ToString() | ConvertFrom-Json -AsHashtable
-$ctx = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageKeys.keys[0].value
+$ctx = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $storageKeys.keys[0].value
 
-Write-Host "Copying all files from '$linkedfilesLocalPath' to the storage account..."
-$linkedfilesLocalPath = (Resolve-Path -Path $linkedfilesLocalPath).Path
+Write-Host "Copying all files from '$LinkedfilesLocalPath' to the storage account..."
+$LinkedfilesLocalPath = (Resolve-Path -Path $LinkedfilesLocalPath).Path
 $counter = 0
-Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
+Get-ChildItem -File -Recurse $LinkedfilesLocalPath | ForEach-Object {
     Set-AzStorageBlobContent `
         -File $_.FullName `
-        -Blob $_.FullName.Substring($linkedfilesLocalPath.Length + 1) `
-        -Container $containerName `
+        -Blob $_.FullName.Substring($LinkedfilesLocalPath.Length + 1) `
+        -Container $ContainerName `
         -Context $ctx `
         -Force | Out-Null
     $counter += 1
 }
-Write-Host "Successfully copied $counter files to storage account '$storageAccountName'!"
+Write-Host "Successfully copied $counter files to storage account '$StorageAccountName'!"
