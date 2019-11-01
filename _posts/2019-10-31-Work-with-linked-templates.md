@@ -47,7 +47,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 }
 ```
 
-[Here you can download the full script](~/2019-10-31/copy-to-storage.json)
+[Here you can download the full script](http://kingofarm.com/2019-10-31/copy-to-storage.ps1)
 
 
 # Use the linked templates in your storage account
@@ -89,11 +89,11 @@ Use these in all the linked templates resousrces. Here you can see one example
   }
 ]
 ```
-[Here you can download the full ARM template](./2019-10-31/parent-arm.json)
+[Here you can download the full ARM template](http://kingofarm.com/2019-10-31/parent-arm.json)
 
 ## Script for fetching the 
 ```PowerShell
 ```
 
 
-[Here you can download the full script](./2019-10-31/deploy-parent-arm.json)
+[Here you can download the full script](http://kingofarm.com/2019-10-31/deploy-parent-arm.ps1)
