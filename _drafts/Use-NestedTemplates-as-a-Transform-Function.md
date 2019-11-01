@@ -3,6 +3,7 @@ layout: post
 title: "Nested template as a transform function"
 date: 2019-11-24
 tags: [ARM, ARM-template]
+
 ---
 
 When working with complex ARM templates it is something desirable to separate some of the logic from the primary template.
