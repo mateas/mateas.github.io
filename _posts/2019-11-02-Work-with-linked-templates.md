@@ -118,7 +118,7 @@ $sasToken = New-AzStorageContainerSASToken `
 
 [Download the full script]({{site.baseurl}}/2019-11-02/get-sas-token.ps1)
 
-### Gluing it all together in an ARM template deployment
+## Step 3: Gluing it all together in an ARM template deployment
 
 Now we have a PowerShell script _publishing_ the linked templates into a Azure Storage Account and another script for fetching the SAS token for that same storage account. We also have a _parent_ ARM template that is using the linked templates feature for <a href="https://en.wikipedia.org/wiki/Separation_of_concerns" target="_blank">_separation of concerns_</a>.
 
