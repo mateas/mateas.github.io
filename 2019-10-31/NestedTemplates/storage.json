@@ -10,6 +10,7 @@
         },
         "containerName": {
             "type": "string",
+            "defaultValue": "acontainer",
             "metadata": {
                 "description": "Specifies the name of the blob container."
             }

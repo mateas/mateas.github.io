@@ -1,5 +1,4 @@
 param (
-    [Parameter(Mandatory = $true)]
     $StorageAccountName,
     $ResourceGroupName = "arm-deployment",
     $ContainerName = "linkedfiles",
@@ -19,4 +18,7 @@ $sasToken = New-AzStorageContainerSASToken `
     -ExpiryTime $EndTime `
     -Permission $ReadPermission `
     -Context $storageAccount.Context
-return $sasToken
+return @{
+    Endpoint = $storageAccount.PrimaryEndpoints.Blob + $ContainerName
+    SASToken = [string]$sasToken
+}

@@ -12,7 +12,7 @@ Write-Host "Deploying a storage account using ARM template from kingofarm.com...
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
     -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
-    -Name storage-deployment `
+    -Name 'storage-deployment' `
     -ResourceGroupName $ResourceGroupName `
     -TemplateParameterObject @{ `
         storageAccountName = $StorageAccountName; `

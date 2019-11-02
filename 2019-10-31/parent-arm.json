@@ -6,7 +6,7 @@
             "type": "string"
         },
         "TemplateToken": {
-            "type": "string"
+            "type": "securestring"
         },
         "StorageAccountName": {
             "type": "string"
@@ -20,7 +20,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('TemplateURL'), '/NestedTemplates/storage.json', parameters('TemplateToken'))]",
+                    "uri": "[concat(parameters('TemplateURL'), '/storage.json', parameters('TemplateToken'))]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
