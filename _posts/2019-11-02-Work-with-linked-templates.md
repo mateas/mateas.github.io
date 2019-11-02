@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Work with linked templates"
-date: 2019-10-31
+date: 2019-11-02
 tags: [ARM, ARM-template, PowerShell, Azure, Deployment]
 ---
 
@@ -17,12 +17,12 @@ A simple solution to this is to copy you linked templates into a Azure storage a
 
 #### Create a Azure storage account for your nested templates
 
-You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at <a href="{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json">{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json</a>
+You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at <a href="{{site.baseurl}}/2019-11-02/NestedTemplates/storage.json">{{site.baseurl}}/2019-11-02/NestedTemplates/storage.json</a>
 
 ```powershell
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force | Out-Null
 $storageAccountDeployment = New-AzResourceGroupDeployment `
-    -TemplateUri "http://kingofarm.com/2019-10-31/NestedTemplates/storage.json" `
+    -TemplateUri "http://kingofarm.com/2019-11-02/NestedTemplates/storage.json" `
     -Name storage-deployment `
     -ResourceGroupName $resourceGroupName `
     -Location $location `
@@ -55,7 +55,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 }
 ```
 
-[Download the full script]({{site.baseurl}}/2019-10-31/copy-to-storage.ps1)
+[Download the full script]({{site.baseurl}}/2019-11-02/copy-to-storage.ps1)
 
 ## Step 2: Use the linked templates in your storage account
 
@@ -100,7 +100,7 @@ Use these in all the linked templates resousrces. Here you can see one example
 ]
 ```
 
-[Download the full ARM template]({{site.baseurl}}/2019-10-31/parent-arm.json)
+[Download the full ARM template]({{site.baseurl}}/2019-11-02/parent-arm.json)
 
 ### Script for fetching the SAS token
 
@@ -116,7 +116,7 @@ $sasToken = New-AzStorageContainerSASToken `
     -Context $storageAccount.Context
 ```
 
-[Download the full script]({{site.baseurl}}/2019-10-31/get-sas-token.ps1)
+[Download the full script]({{site.baseurl}}/2019-11-02/get-sas-token.ps1)
 
 ### Gluing it all together in an ARM template deployment
 
@@ -148,7 +148,7 @@ New-AzResourceGroupDeployment `
 }
 ```
 
-[Download the full script]({{site.baseurl}}/2019-10-31/deploy-parent-arm.ps1)
+[Download the full script]({{site.baseurl}}/2019-11-02/deploy-parent-arm.ps1)
 
 >Note: We are using PowerShell dotsourcing to execute the scripts. You probably want to wrap these into PowerShell modules to get a better packaging of your code
 
