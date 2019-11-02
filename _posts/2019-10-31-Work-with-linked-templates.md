@@ -9,12 +9,12 @@ Linked templates is the ARM template feature that allows you to separate differe
 
 The only issue with linked templates is that the template tha is being linked must be availbale on the Internet and cannot be supplied at deploytime together with the _parent_ template. 
 
-## Make your templates available in private storage account
+## Step 1:  Make your templates available in private storage account
 A simple solution to this is to copy you linked templates into a Azure storage account container with no public access. When you are to deploy your master template, create a SAS token for the container and supply that to your master template as a ARM parameter. 
 
-# Copy-script for your linked templates
+### Copy-script for your linked templates
 
-### Step 1 - Create a storage account for your nested templates
+#### Create a Azure storage account for your nested templates
 You can use a ARM template from kingofarm.com as in following example but there are alternatives. You can use AZ CLI, Az PowerShell module or an custom ARM template of your own to create the storage account. Here we use a simple ARM template located at <a href="{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json">{{site.baseurl}}/2019-10-31/NestedTemplates/storage.json</a>
 
 ```powershell
@@ -30,7 +30,7 @@ $storageAccountDeployment = New-AzResourceGroupDeployment `
 }
 ```
 
-### Step 2 - Copy all nested template files
+#### Copy all nested template files
 Arrange all your nested templates into a single folder and copy each file to the blob storage container recursively. Use `New-AzStorageContext` to create a context connected to the storage accoutn required for the copy function `Set-AzStorageBlobContent`.
 
 ```powershell
@@ -55,7 +55,7 @@ Get-ChildItem -File -Recurse $linkedfilesLocalPath | ForEach-Object {
 [Download the full script]({{site.baseurl}}/2019-10-31/copy-to-storage.ps1)
 
 
-# Use the linked templates in your storage account
+## Step 2: Use the linked templates in your storage account
 
 Introduce 2 parameters in the _parent_ template; `TemplateURL` and `TemplateToken`  which  will hold the values to access the linked template. 
 
