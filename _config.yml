@@ -8,6 +8,7 @@ google_analytics: UA-150949537-1
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Disqus Comments
 disqus:
