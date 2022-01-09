@@ -21,6 +21,13 @@
                             "abc": "this is the 2nd abc in the 2nd array object"
                         }
                     ]
+                },
+                {
+                    "thisIsAInnerArrayProp": [
+                        {
+                            "abc": "this is the 1st abc in the 3rd array object"
+                        }
+                    ]
                 }
             ]
         }
@@ -74,7 +81,7 @@
     "outputs": {
         "result": {
             "type": "array",
-            "value": "[reference(concat('nestedTemplate', '1')).outputs.result.value]"
+            "value": "[reference(concat('nestedTemplate', sub(length(parameters('myNestedArrayParam')), 1))).outputs.result.value]"
         }
     }
 }
