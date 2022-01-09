@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Nested template as a transform function"
-date: 2019-12-01
+date: 2021-05-01
 tags: [ARM, ARM-template]
 ---
 
